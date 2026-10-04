@@ -90,8 +90,12 @@ function mapAuthErrorToTurkish(message: string): string {
     return "E-posta adresi geçersiz görünüyor. Lütfen kontrol edin.";
   }
 
-  if (lower.includes("network") || lower.includes("fetch")) {
-    return "Bağlantı hatası oluştu. İnternetinizi kontrol edip tekrar deneyin.";
+  if (
+    lower.includes("network") ||
+    lower.includes("fetch") ||
+    lower.includes("failed to fetch")
+  ) {
+    return "Supabase sunucusuna bağlanılamadı. .env.local içindeki Project URL doğru mu ve proje aktif mi kontrol edin.";
   }
 
   return "Giriş linki gönderilemedi. Lütfen daha sonra tekrar deneyin.";
