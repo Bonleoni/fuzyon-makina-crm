@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   flexRender,
   getCoreRowModel,
@@ -30,12 +31,15 @@ const columns: ColumnDef<LeadListItem>[] = [
     accessorKey: "companyName",
     header: "Şirket Adı",
     cell: ({ row }) => (
-      <div>
+      <Link
+        href={`/admin/leads/${row.original.id}`}
+        className="block hover:underline"
+      >
         <p className="font-medium text-zinc-900">{row.original.companyName}</p>
         {row.original.email ? (
           <p className="text-xs text-zinc-500">{row.original.email}</p>
         ) : null}
-      </div>
+      </Link>
     ),
   },
   {
@@ -46,13 +50,15 @@ const columns: ColumnDef<LeadListItem>[] = [
   {
     accessorKey: "sector",
     header: "Sektör",
-    cell: () => "—",
+    cell: ({ row }) => row.original.sector ?? "—",
   },
   {
     accessorKey: "aiScore",
     header: "AI Skoru",
     cell: ({ row }) => (
-      <span className="tabular-nums font-medium">{row.original.aiScore}</span>
+      <span className="tabular-nums font-medium">
+        {row.original.aiScore}/10
+      </span>
     ),
   },
   {
@@ -63,7 +69,10 @@ const columns: ColumnDef<LeadListItem>[] = [
   {
     accessorKey: "lastContactAt",
     header: "Son Temas",
-    cell: () => "—",
+    cell: ({ row }) => {
+      if (!row.original.lastContactAt) return "—";
+      return new Date(row.original.lastContactAt).toLocaleDateString("tr-TR");
+    },
   },
   {
     id: "actions",
@@ -76,10 +85,8 @@ const columns: ColumnDef<LeadListItem>[] = [
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem
-            onClick={() => console.log("Lead detay:", row.original.id)}
-          >
-            Detay (yakında)
+          <DropdownMenuItem asChild>
+            <Link href={`/admin/leads/${row.original.id}`}>Detayı Aç</Link>
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => console.log("Lead düzenle:", row.original.id)}

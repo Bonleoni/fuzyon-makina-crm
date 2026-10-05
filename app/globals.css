@@ -33,4 +33,9 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Sekme/içerik yüksekliği değişince yatay kaymayı önler */
+  html {
+    scrollbar-gutter: stable;
+  }
 }

@@ -33,9 +33,11 @@ export default async function LeadsPage({ searchParams }: LeadsPageProps) {
     sortDir: "desc",
   });
 
+  const showSeedButton = process.env.NODE_ENV === "development";
+
   return (
     <Suspense fallback={<p className="text-sm text-zinc-500">Yükleniyor...</p>}>
-      <LeadsView initialResult={result} />
+      <LeadsView initialResult={result} showSeedButton={showSeedButton} />
     </Suspense>
   );
 }

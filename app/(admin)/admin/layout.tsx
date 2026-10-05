@@ -11,7 +11,9 @@ const navItems = [
 ];
 
 /**
- * Admin paneli iskeleti: sol sidebar + üst header + içerik alanı.
+ * Admin paneli iskeleti:
+ * - Üst bar tam genişlikte (tek sürekli border çizgisi)
+ * - Sol menü + içerik alanı hizalı
  */
 export default async function AdminLayout({
   children,
@@ -33,35 +35,41 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="flex min-h-screen bg-zinc-50 text-zinc-900">
-      <aside className="flex w-60 flex-col border-r border-zinc-200 bg-white">
-        <div className="border-b border-zinc-200 px-5 py-4">
-          <p className="text-sm font-semibold tracking-tight">Fuzyon Makina</p>
-          <p className="text-xs text-zinc-500">İhracat CRM</p>
+    <div className="flex min-h-screen flex-col bg-zinc-50 text-zinc-900">
+      {/* Tek sürekli üst çizgi için tam genişlik header */}
+      <header className="flex h-14 shrink-0 items-center border-b border-zinc-200 bg-white">
+        <div className="flex h-full w-60 shrink-0 items-center border-r border-zinc-200 px-5">
+          <div>
+            <p className="text-sm font-semibold tracking-tight">Fuzyon Makina</p>
+            <p className="text-xs text-zinc-500">İhracat CRM</p>
+          </div>
         </div>
-        <nav className="flex flex-1 flex-col gap-1 p-3">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-zinc-700 transition-colors hover:bg-zinc-100 hover:text-zinc-900"
-              >
-                <Icon className="size-4 shrink-0" />
-                {item.label}
-              </Link>
-            );
-          })}
-        </nav>
-      </aside>
-
-      <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex h-14 items-center justify-between border-b border-zinc-200 bg-white px-6">
+        <div className="flex h-full min-w-0 flex-1 items-center justify-between px-6">
           <h1 className="text-sm font-medium text-zinc-700">Admin Panel</h1>
           <p className="truncate text-sm text-zinc-500">{userEmail}</p>
-        </header>
-        <main className="flex-1 p-6">{children}</main>
+        </div>
+      </header>
+
+      <div className="flex min-h-0 flex-1">
+        <aside className="flex w-60 shrink-0 flex-col border-r border-zinc-200 bg-white">
+          <nav className="flex flex-1 flex-col gap-1 p-3">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-zinc-700 transition-colors hover:bg-zinc-100 hover:text-zinc-900"
+                >
+                  <Icon className="size-4 shrink-0" />
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
+        </aside>
+
+        <main className="min-w-0 flex-1 overflow-y-auto p-6">{children}</main>
       </div>
     </div>
   );

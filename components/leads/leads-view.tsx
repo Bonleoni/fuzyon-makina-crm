@@ -23,6 +23,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LeadTable } from "@/components/leads/lead-table";
 import { AddLeadDialog } from "@/components/leads/add-lead-dialog";
+import { SeedTestDataButton } from "@/components/leads/seed-test-data-button";
+import { ApifyScraperDialog } from "@/components/leads/apify-scraper-dialog";
 import {
   COUNTRY_OPTIONS,
   LEAD_STATUSES,
@@ -34,12 +36,17 @@ import type { GetLeadsResult } from "@/lib/leads";
 
 type LeadsViewProps = {
   initialResult: GetLeadsResult;
+  /** Sadece development ortamında true olmalı */
+  showSeedButton?: boolean;
 };
 
 /**
  * Lead listesi: filtreler, arama, tablo, sayfalama ve yeni lead butonu.
  */
-export function LeadsView({ initialResult }: LeadsViewProps) {
+export function LeadsView({
+  initialResult,
+  showSeedButton = false,
+}: LeadsViewProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -105,7 +112,7 @@ export function LeadsView({ initialResult }: LeadsViewProps) {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="mx-auto w-full max-w-6xl space-y-4">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-xl font-semibold tracking-tight">Lead Yönetimi</h2>
@@ -113,7 +120,11 @@ export function LeadsView({ initialResult }: LeadsViewProps) {
             DACH bölgesi potansiyel müşteri listesi
           </p>
         </div>
-        <AddLeadDialog />
+        <div className="flex shrink-0 flex-wrap items-center gap-2">
+          <ApifyScraperDialog />
+          {showSeedButton ? <SeedTestDataButton /> : null}
+          <AddLeadDialog />
+        </div>
       </div>
 
       <div className="flex flex-col gap-3 rounded-lg border bg-white p-4 lg:flex-row lg:items-end">
